@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="CNES" id="Project_16385a" template="Default" database="PostgreSQL" >
+	<comment><![CDATA[Projeto para a replicação da base de dados do CNES 
+(Cadastro Nacional de Estabelecimento de Saúde), 
+conforme documentos disponíveis em: 
+http://cnes.datasus.gov.br/pages/downloads/arquivosBaseDados.jsp]]></comment>
+	<schema name="cnes" schemaname="cnes" >
+		<table name="rl_estab_atend_prest_conv" >
+			<comment><![CDATA[Atendimento prestado p/ unidade (banco federal)]]></comment>
+			<column name="id" type="integer" jt="4" />
+		</table>
+		<table name="rl_estab_coleta_sel_rejeito" >
+			<comment><![CDATA[Coleta seletiva de rejeitos (banco federal)]]></comment>
+			<column name="id" type="integer" jt="4" />
+		</table>
+		<table name="rl_estab_complementar" >
+			<comment><![CDATA[Leitos hospitalares (banco federal)]]></comment>
+			<column name="co_unidade" type="varchar" length="31" jt="12" mandatory="y" >
+				<comment><![CDATA[Código do Estabelecimento de Saúde]]></comment>
+			</column>
+			<column name="co_leito" type="char" length="2" jt="1" mandatory="y" >
+				<comment><![CDATA[Código do Leito]]></comment>
+			</column>
+			<column name="co_tipo_leito" type="char" length="2" jt="1" >
+				<comment><![CDATA[Código do Tipo de Leito]]></comment>
+			</column>
+			<column name="tp_altacomp" type="char" length="1" jt="1" >
+				<comment><![CDATA[Sem Uso]]></comment>
+			</column>
+			<column name="qt_exist" type="numeric" length="6" decimal="0" jt="2" >
+				<comment><![CDATA[Quantidade de Leitos Existentes]]></comment>
+			</column>
+			<column name="qt_contr" type="numeric" length="6" decimal="0" jt="2" >
+				<comment><![CDATA[Sem uso]]></comment>
+			</column>
+			<column name="qt_sus" type="numeric" length="6" decimal="0" jt="2" >
+				<comment><![CDATA[Quantidade de Leitos Disponíveis para o SUS (para os estabelecimentos vinculados ao SUS)]]></comment>
+			</column>
+			<column name="dt_atualizacao" type="date" jt="91" mandatory="y" >
+				<comment><![CDATA[Data da Última Atualização do Registro]]></comment>
+			</column>
+			<column name="co_usuario" type="varchar" length="12" jt="12" mandatory="y" >
+				<comment><![CDATA[Último Usuário que atualizou o Registro]]></comment>
+			</column>
+			<column name="dt_atualizacao_origem" type="date" jt="91" >
+				<comment><![CDATA[Data da Primeira entrada no Banco de Produção Federal]]></comment>
+			</column>
+			<column name="dt_cmtp_inicio" type="date" jt="91" >
+				<comment><![CDATA[Data da Primeira entrada ou Data do Retorno no Banco de Produção Federal]]></comment>
+			</column>
+			<column name="dt_cmtp_fim" type="date" jt="91" >
+				<comment><![CDATA[Data Final de Competência]]></comment>
+			</column>
+			<column name="nu_seq_processo" type="numeric" length="8" decimal="0" jt="2" >
+				<comment><![CDATA[Número do Processo da Última Carga]]></comment>
+			</column>
+			<index name="pk_rl_estab_complementar" unique="PRIMARY_KEY" >
+				<comment>Primary key desta tabela</comment>
+				<column name="co_unidade" />
+				<column name="co_leito" />
+			</index>
+		</table>
+		<table name="rl_estab_prog_fundo" >
+			<comment><![CDATA[Gestão de atividades/nível de atenção (banco federal)]]></comment>
+			<column name="id" type="integer" jt="4" />
+		</table>
+		<table name="tb_estabelecimento" >
+			<comment><![CDATA[Estabelecimentos de saúde (banco federal)]]></comment>
+			<column name="co_unidade" type="varchar" length="31" jt="12" mandatory="y" >
+				<comment><![CDATA[Códito do Estabelecimento de Saúde]]></comment>
+			</column>
+			<column name="co_cnes" type="varchar" length="7" jt="12" >
+				<comment><![CDATA[Código Nacional do Estabelecimento de Saúde]]></comment>
+			</column>
+			<column name="nu_cnpj_mantenedora" type="varchar" length="14" jt="12" >
+				<comment><![CDATA[CNPJ da Mantenedora]]></comment>
+			</column>
+			<column name="tp_pfpj" type="char" length="1" jt="1" >
+				<comment><![CDATA[Indica se é Pessoa Física ou Jurídica
+1 = Pessoa Física
+3 = Pessoa Jurídica]]></comment>
+			</column>
+			<column name="nivel_dep" type="char" length="1" jt="1" >
+				<comment><![CDATA[Identifiador da Situação do Estabelecimento
+1 = Individual
+3 = Mantido]]></comment>
+			</column>
+			<column name="no_razao_social" type="varchar" length="60" jt="12" mandatory="y" >
+				<comment><![CDATA[Razão Social]]></comment>
+			</column>
+			<column name="no_fantasia" type="varchar" length="60" jt="12" mandatory="y" >
+				<comment><![CDATA[Nome Fantasia]]></comment>
+			</column>
+			<column name="no_logradouro" type="varchar" length="60" jt="12" mandatory="y" >
+				<comment><![CDATA[Logradouro]]></comment>
+			</column>
+			<column name="nu_endereco" type="varchar" length="10" jt="12" >
+				<comment><![CDATA[Número]]></comment>
+			</column>
+			<column name="no_complemento" type="varchar" length="20" jt="12" >
+				<comment><![CDATA[Complemento]]></comment>
+			</column>
+			<column name="no_bairro" type="varchar" length="40" jt="12" mandatory="y" >
+				<comment><![CDATA[Bairro]]></comment>
+			</column>
+			<column name="co_cep" type="varchar" length="8" jt="12" mandatory="y" >
+				<comment><![CDATA[Código de Endereçamento Postal]]></comment>
+			</column>
+			<column name="co_regiao_saude" type="varchar" length="4" jt="12" >
+				<comment><![CDATA[Código da Região de Saúde]]></comment>
+			</column>
+			<column name="co_micro_regiao" type="varchar" length="6" jt="12" >
+				<comment><![CDATA[Código da Microregião de Saúde]]></comment>
+			</column>
+			<column name="co_distrito_sanitario" type="varchar" length="4" jt="12" >
+				<comment><![CDATA[Código do Distrito Sanitário]]></comment>
+			</column>
+			<column name="co_distrito_administrativo" type="varchar" length="4" jt="12" >
+				<comment><![CDATA[Código do Módulo Assistencial (Conforme o plano Diretor de Regionalização do Estado/Município)]]></comment>
+			</column>
+			<column name="nu_telefone" type="varchar" length="13" jt="12" >
+				<comment><![CDATA[Telefone]]></comment>
+			</column>
+			<column name="nu_fax" type="varchar" length="13" jt="12" >
+				<comment><![CDATA[Fax]]></comment>
+			</column>
+			<column name="no_email" type="varchar" length="30" jt="12" >
+				<comment><![CDATA[E-Mail]]></comment>
+			</column>
+			<column name="nu_cpf" type="varchar" length="11" jt="12" >
+				<comment><![CDATA[CPF do Estabelecimento (Esse campo só é preenchido no caso do campo PFPJ_IND = 1)]]></comment>
+			</column>
+			<column name="nu_cnpj" type="varchar" length="14" jt="12" >
+				<comment><![CDATA[CNPJ do Estabelecimento (Esse campo só é preenchido no caso do campo PFPJ_IND = 3)]]></comment>
+			</column>
+			<column name="co_atividade" type="char" length="2" jt="1" >
+				<comment><![CDATA[Código da Atividade de Ensino/Pesquisa]]></comment>
+			</column>
+			<column name="c0_clientela" type="char" length="2" jt="1" >
+				<comment><![CDATA[Código de Fluxo da Clientela]]></comment>
+			</column>
+			<column name="nu_alvara" type="varchar" length="25" jt="12" >
+				<comment><![CDATA[Número do Alvará (Vigilância Sanitária)]]></comment>
+			</column>
+			<column name="dt_expedicao" type="date" jt="91" >
+				<comment><![CDATA[Data de Expedição do Alvará (Vigilância Sanitária)]]></comment>
+			</column>
+			<column name="tp_orgao_expedidor" type="char" length="1" jt="1" >
+				<comment><![CDATA[Órgão Expedidor (Vigilância Sanitária)
+1 = SES
+2 = SMS]]></comment>
+			</column>
+			<column name="dt_val_lic_sani" type="date" jt="91" >
+				<comment><![CDATA[Data de Validade do Licenciamento Sanitário]]></comment>
+			</column>
+			<column name="tp_lic_sani" type="char" length="1" jt="1" >
+				<comment><![CDATA[Tipo do Licenciamento Sanitário
+1 = Total
+2 = Parcial/Restrições]]></comment>
+			</column>
+			<column name="tp_unidade" type="char" length="2" jt="1" >
+				<comment><![CDATA[Tipo de Estabelecimento]]></comment>
+			</column>
+			<column name="co_turno_atendimento" type="char" length="2" jt="1" >
+				<comment><![CDATA[Código do Turno de Atendimento]]></comment>
+			</column>
+			<column name="co_estado_gestor" type="char" length="2" jt="1" >
+				<comment><![CDATA[Sigla do Estado]]></comment>
+			</column>
+			<column name="co_municipio_gestor" type="varchar" length="7" jt="12" mandatory="y" >
+				<comment><![CDATA[Código do Município]]></comment>
+			</column>
+			<column name="dt_atualizacao" type="date" jt="91" mandatory="y" >
+				<comment><![CDATA[Data da Última Atualização do Registro]]></comment>
+			</column>
+			<column name="co_usuario" type="varchar" length="12" jt="12" mandatory="y" >
+				<comment><![CDATA[Último Úsuário que atualizou o Registro]]></comment>
+			</column>
+			<column name="co_cpfdiretorcln" type="varchar" length="11" jt="12" >
+				<comment><![CDATA[CPF do Diretor Clínico ou Gerente/Administrador]]></comment>
+			</column>
+			<column name="reg_diretorcln" type="varchar" length="60" jt="12" >
+				<comment><![CDATA[Registro no Conselho de Classe do Diretor Clínico]]></comment>
+			</column>
+			<column name="st_adesao_filantrop" type="char" length="1" jt="1" >
+				<comment><![CDATA[Indica se o hospital fez adesão ao Programa de Reestruturação de Hospital Filantrópico
+1 = Sim
+2 = Não]]></comment>
+			</column>
+			<column name="co_motivo_desab" type="varchar" length="2" jt="12" >
+				<comment><![CDATA[Código do Motivo de Desativação do Estabelecimento]]></comment>
+			</column>
+			<column name="no_url" type="varchar" length="60" jt="12" >
+				<comment><![CDATA[Endereço URL]]></comment>
+			</column>
+			<column name="nu_latitude" type="varchar" length="30" jt="12" >
+				<comment><![CDATA[Latitude do Endereço do Estabelecimento]]></comment>
+			</column>
+			<column name="nu_longitude" type="varchar" length="30" jt="12" >
+				<comment><![CDATA[Longitude do Endereço do Estabelecimento]]></comment>
+			</column>
+			<column name="dt_atu_geo" type="date" jt="91" >
+				<comment><![CDATA[Data de atualização das Coordenadas]]></comment>
+			</column>
+			<column name="no_usuario_geo" type="varchar" length="60" jt="12" >
+				<comment><![CDATA[Nome do Usuário que atualizou as Coordenadas]]></comment>
+			</column>
+			<column name="co_natureza_jur" type="varchar" length="4" jt="12" >
+				<comment><![CDATA[Código da Natureza Jurídica do Estabelecimento]]></comment>
+			</column>
+			<column name="tp_estab_sempre_aberto" type="char" length="1" jt="1" >
+				<comment><![CDATA[Funcionamento do estabelecimento (indica se fica sempre aberto)
+S = sim
+N = não]]></comment>
+			</column>
+			<column name="st_geracredito_gerente_sgif" type="char" length="1" jt="1" >
+				<comment><![CDATA[Indica se o crédito gerado pelo estabelecimento será direcionado para o Gerente/Administrador(terceiro)/Interveniente no SGIF (Sistema de Gestão de Informações Financeiras do SUS)
+S = sim
+N = não]]></comment>
+			</column>
+			<column name="st_conexaointernet" type="char" length="1" jt="1" >
+				<comment><![CDATA[Possui Conexão Internet
+S = sim
+N = não]]></comment>
+			</column>
+			<column name="co_tipo_unidade" type="char" length="2" jt="1" >
+				<comment><![CDATA[Sem Uso]]></comment>
+			</column>
+			<column name="no_fantasia_abrev" type="varchar" length="21" jt="12" >
+				<comment><![CDATA[Sem Uso]]></comment>
+			</column>
+			<column name="tp_gestao" type="char" length="1" jt="1" >
+				<comment><![CDATA[Tipo de Gestão
+M = municipal
+E = estadual
+D = dupla
+S = sem gestão]]></comment>
+			</column>
+			<column name="dt_atualizacao_origem" type="date" jt="91" >
+				<comment><![CDATA[Data da Primeira entrada no Banco de Produção Federal]]></comment>
+			</column>
+			<column name="dt_cmtp_inicio" type="date" jt="91" >
+				<comment><![CDATA[Data da Primeira entrada ou Data do Retorno no Banco de Produção Federal]]></comment>
+			</column>
+			<column name="dt_cmtp_fim" type="date" jt="91" >
+				<comment><![CDATA[Data Final de Competência]]></comment>
+			</column>
+			<column name="nu_seq_processo" type="numeric" length="8" decimal="0" jt="2" >
+				<comment><![CDATA[Número do Processo da Última Carga]]></comment>
+			</column>
+			<index name="pk_tb_estabelecimento_co_unidade" unique="PRIMARY_KEY" >
+				<column name="co_unidade" />
+			</index>
+			<constraint name="cc_tb_estabelecimento_tp_pfpj" >
+				<string>tp_pfpj IN (&#039;1&#039;, &#039;3&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo tp_pfpj]]></comment>
+			</constraint>
+			<constraint name="cc_tb_estabelecimento_nivel_dep" >
+				<string>nivel_dep IN (&#039;1&#039;, &#039;3&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo nivel_dep]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-tp_orgao_expedidor" >
+				<string>tp_orgao_expedidor IN (&#039;1&#039;, &#039;2&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo tp_orgao_expedidor]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-tp_lic_sani" >
+				<string>tp_lic_sani IN (&#039;1&#039;, &#039;2&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo tp_lic_sani]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-st_adesao_filantrop" >
+				<string>st_adesao_filantrop IN (&#039;1&#039;, &#039;2&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo st_adesao_filantrop]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-tp_estab_sempre_aberto" >
+				<string>tp_estab_sempre_aberto IN (&#039;S&#039;, &#039;N&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo tp_estab_sempre_aberto]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-st_geracredito_gerente_sgif" >
+				<string>st_geracredito_gerente_sgif IN (&#039;S&#039;, &#039;N&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo st_geracredito_gerente_sgif]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-st_conexao_internet" >
+				<string>st_conexaointernet IN (&#039;S&#039;, &#039;N&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo st_conexaointernet]]></comment>
+			</constraint>
+			<constraint name="cc-tb_estabelecimento-tp_gestao" >
+				<string>tp_gestao IN (&#039;M&#039;, &#039;E&#039;, &#039;D&#039;, &#039;S&#039;)</string>
+				<comment><![CDATA[Checa códigos no campo tp_gestao]]></comment>
+			</constraint>
+		</table>
+		<table name="tb_mantenedora" >
+			<comment><![CDATA[Mantenedora (banco federal)]]></comment>
+			<column name="id" type="integer" jt="4" />
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout_362c6ef" show_column_type="y" show_relation="columns" >
+		<entity schema="cnes" name="rl_estab_prog_fundo" color="001A80" x="224" y="208" />
+		<entity schema="cnes" name="rl_estab_coleta_sel_rejeito" color="001A80" x="64" y="416" />
+		<entity schema="cnes" name="rl_estab_atend_prest_conv" color="001A80" x="48" y="320" />
+		<entity schema="cnes" name="tb_mantenedora" color="001A80" x="80" y="192" />
+		<entity schema="cnes" name="rl_estab_complementar" color="001A80" x="944" y="144" />
+		<entity schema="cnes" name="tb_estabelecimento" color="001A80" x="672" y="48" />
+	</layout>
+</project>
